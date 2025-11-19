@@ -1,0 +1,139 @@
+<!-- <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="static/styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <h1>SocialSync Dashboard</h1>
+    <div>
+      <canvas id="sentimentChart" width="400" height="200"></canvas>
+    </div>
+    <div>
+      <h3>Top Tags</h3>
+      <ul id="tagsList"></ul>
+    </div>
+
+    <script>
+      async function loadSentiment() {
+        const r = await fetch(
+          "http://localhost:8000/analytics/sentiment-distribution"
+        );
+        const data = await r.json(); // list of { sentiment, count }
+        const labels = data.map((d) => d.sentiment || "unknown");
+        const counts = data.map((d) => d.count);
+        const ctx = document.getElementById("sentimentChart").getContext("2d");
+        new Chart(ctx, {
+          type: "pie",
+          data: { labels, datasets: [{ data: counts }] },
+        });
+      }
+
+      async function loadTags() {
+        const r = await fetch("http://localhost:8000/analytics/top-tags");
+        const data = await r.json();
+        const ul = document.getElementById("tagsList");
+        ul.innerHTML = "";
+        data.forEach((t) => {
+          const li = document.createElement("li");
+          li.innerText = `${t.tag} (${t.count})`;
+          ul.appendChild(li);
+        });
+      }
+
+      loadSentiment();
+      loadTags();
+    </script>
+  </body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - SocialSync</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="logo">SocialSync</div>
+        <div class="nav-links">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="upload.html" class="nav-link">Upload</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="dashboard-container">
+      <h1>Analytics Dashboard</h1>
+
+      <div class="kpi-section">
+        <div class="kpi-card">
+          <div class="kpi-icon">📊</div>
+          <div class="kpi-content">
+            <span class="kpi-label">Total Posts</span>
+            <span class="kpi-value" id="totalPosts">0</span>
+          </div>
+        </div>
+
+        <div class="kpi-card positive">
+          <div class="kpi-icon">😊</div>
+          <div class="kpi-content">
+            <span class="kpi-label">Positive</span>
+            <span class="kpi-value" id="positivePosts">0</span>
+          </div>
+        </div>
+
+        <div class="kpi-card neutral">
+          <div class="kpi-icon">😐</div>
+          <div class="kpi-content">
+            <span class="kpi-label">Neutral</span>
+            <span class="kpi-value" id="neutralPosts">0</span>
+          </div>
+        </div>
+
+        <div class="kpi-card negative">
+          <div class="kpi-icon">😞</div>
+          <div class="kpi-content">
+            <span class="kpi-label">Negative</span>
+            <span class="kpi-value" id="negativePosts">0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="charts-section">
+        <div class="chart-card">
+          <h2>Sentiment Distribution</h2>
+          <div class="chart-wrapper">
+            <canvas id="sentimentChart"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h2>Trending Hashtags</h2>
+          <div class="chart-wrapper">
+            <canvas id="trendingChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="posts-section">
+        <h2>Recent Posts</h2>
+        <div id="postsContainer" class="posts-feed">
+          <div class="loading-spinner"></div>
+        </div>
+      </div>
+    </main>
+
+    <script src="scripts.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        loadDashboardData();
+      });
+    </script>
+  </body>
+</html>

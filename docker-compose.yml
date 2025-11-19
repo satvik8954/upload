@@ -1,0 +1,59 @@
+version: "3.8"
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  mongo:
+    image: mongo:6
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  backend:
+    build: ./backend
+    volumes:
+      - ./backend/app:/app/app
+      - ./data/uploads:/data/uploads
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGO_URL=mongodb://mongo:27017
+      - MONGO_DB=socialsync
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672//
+    depends_on:
+      - rabbitmq
+      - mongo
+
+  worker:
+    build: ./backend
+    command: celery -A app.tasks.celery worker --loglevel=info
+    volumes:
+      - ./backend/app:/app/app
+      - ./data/uploads:/data/uploads
+    environment:
+      - MONGO_URL=mongodb://mongo:27017
+      - MONGO_DB=socialsync
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672//
+    depends_on:
+      - rabbitmq
+      - mongo
+
+  # optional: static frontend served by nginx or simple file host
+  frontend:
+    image: nginx:alpine
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    ports:
+      - "8080:80"
+
+volumes:
+  mongo_data:

@@ -1,0 +1,141 @@
+<!-- <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Upload Post</title>
+    <link rel="stylesheet" href="static/styles.css" />
+  </head>
+  <body>
+    <h1>Upload Post</h1>
+    <form id="postForm">
+      <label>User ID: <input id="user_id" name="user_id" required /></label
+      ><br />
+      <label>Text: <textarea id="text" name="text"></textarea></label><br />
+      <label>File: <input type="file" id="file" name="file" /></label><br />
+      <button type="submit">Upload</button>
+    </form>
+    <div id="status"></div>
+
+    <script>
+      const form = document.getElementById("postForm");
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const user_id = document.getElementById("user_id").value;
+        const text = document.getElementById("text").value;
+        const fileInput = document.getElementById("file");
+
+        const fd = new FormData();
+        fd.append("user_id", user_id);
+        fd.append("text", text);
+        if (fileInput.files.length > 0) {
+          fd.append("file", fileInput.files[0]);
+        }
+
+        const res = await fetch("http://localhost:8000/upload/media", {
+          method: "POST",
+          body: fd,
+        });
+        const j = await res.json();
+        document.getElementById("status").innerText = JSON.stringify(j);
+      });
+    </script>
+  </body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload - SocialSync</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="logo">SocialSync</div>
+        <div class="nav-links">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="dashboard.html" class="nav-link">Dashboard</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="upload-container">
+      <div class="upload-wrapper">
+        <h1>Upload Post</h1>
+
+        <form id="uploadForm" class="upload-form">
+          <div class="form-group">
+            <label for="userId">User ID</label>
+            <input
+              type="text"
+              id="userId"
+              name="userId"
+              placeholder="Enter your user ID"
+              required
+            />
+            <span class="error-message" id="userIdError"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="postContent">Post Content</label>
+            <textarea
+              id="postContent"
+              name="postContent"
+              placeholder="What's on your mind?"
+              rows="6"
+              required
+            ></textarea>
+            <span class="error-message" id="contentError"></span>
+            <span class="char-count"><span id="charCount">0</span>/500</span>
+          </div>
+
+          <div class="form-group">
+            <label for="fileInput">Upload Media (Optional)</label>
+            <div class="file-input-wrapper">
+              <input
+                type="file"
+                id="fileInput"
+                name="file"
+                accept="image/*,video/*"
+              />
+              <label for="fileInput" class="file-label">
+                <span class="file-icon">📁</span>
+                <span>Click to upload or drag and drop</span>
+                <span class="file-hint">PNG, JPG, MP4 up to 50MB</span>
+              </label>
+            </div>
+            <div id="filePreview" class="file-preview"></div>
+            <span class="error-message" id="fileError"></span>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-large">
+            <span class="btn-text">Upload Post</span>
+            <span class="btn-loader hidden"></span>
+          </button>
+        </form>
+
+        <div id="successMessage" class="success-message hidden">
+          <div class="success-content">
+            <span class="success-icon">✓</span>
+            <div>
+              <h3>Post Uploaded Successfully!</h3>
+              <p>Your post has been submitted for analysis.</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="errorAlert" class="error-alert hidden">
+          <span id="errorText"></span>
+        </div>
+      </div>
+    </main>
+
+    <script src="scripts.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        initUploadForm();
+      });
+    </script>
+  </body>
+</html>
