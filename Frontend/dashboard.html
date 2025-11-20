@@ -1,4 +1,4 @@
-<!-- <!DOCTYPE html>
+<!--  <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
@@ -113,10 +113,24 @@
           </div>
         </div>
 
-        <div class="chart-card">
+        <!-- <div class="chart-card">
           <h2>Trending Hashtags</h2>
           <div class="chart-wrapper">
             <canvas id="trendingChart"></canvas>
+          </div>
+        </div> -->
+        <div class="chart-card">
+          <h2>Reach & Views Over Time</h2>
+
+          <div class="time-filters">
+            <button onclick="loadReach('1m')">1 Month</button>
+            <button onclick="loadReach('3m')">3 Months</button>
+            <button onclick="loadReach('6m')">6 Months</button>
+            <button onclick="loadReach('1y')">1 Year</button>
+          </div>
+
+          <div class="chart-wrapper">
+            <canvas id="reachChart"></canvas>
           </div>
         </div>
       </div>
@@ -137,3 +151,5 @@
     </script>
   </body>
 </html>
+1== fethc data [][]
+import showCharts from 

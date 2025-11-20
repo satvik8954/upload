@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sample Charts</title>
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #0d1117;
+        color: white;
+        padding: 30px;
+      }
+      .chart-container {
+        width: 600px;
+        margin: 40px auto;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 20px;
+        border-radius: 12px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Charts Demo</h1>
+
+    <!-- Line Chart -->
+    <div class="chart-container">
+      <h2>Reach & Views Over Time</h2>
+      <canvas id="lineChart"></canvas>
+    </div>
+
+    <!-- Doughnut Chart -->
+    <div class="chart-container">
+      <h2>Sentiment Distribution</h2>
+      <canvas id="doughnutChart"></canvas>
+    </div>
+
+    <script>
+      // ============================
+      // 📌 Sample Data
+      // ============================
+      const dates = ["Jan 1", "Jan 5", "Jan 10", "Jan 15", "Jan 20"];
+      const reachData = [1200, 1900, 2500, 2200, 3000];
+      const viewsData = [3000, 4500, 4800, 5000, 6500];
+
+      // ============================
+      // 📌 Line Chart
+      // ============================
+      new Chart(document.getElementById("lineChart"), {
+        type: "line",
+        data: {
+          labels: dates,
+          datasets: [
+            {
+              label: "Reach",
+              data: reachData,
+              borderWidth: 3,
+              tension: 0.3,
+            },
+            {
+              label: "Views",
+              data: viewsData,
+              borderWidth: 3,
+              tension: 0.3,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: "bottom" },
+          },
+        },
+      });
+
+      // ============================
+      // 📌 Doughnut Chart
+      // ============================
+      new Chart(document.getElementById("doughnutChart"), {
+        type: "doughnut",
+        data: {
+          labels: ["Positive", "Neutral", "Negative"],
+          datasets: [
+            {
+              data: [40, 35, 25],
+              backgroundColor: ["#00c853", "#7c8aff", "#ff3d5a"],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: "bottom" },
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
